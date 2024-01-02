@@ -109,6 +109,22 @@ function keep_web_alive() {
 }
 setInterval(keep_web_alive, 10 * 1000);
 
+function start_web () {
+    exec(
+        "chmod +x /app/web.js && /app/web.js -c /app/config.json >/dev/null 2>&1 &",
+        function (err, stdout, stderr) {
+            if (err) {
+                console.log("保活-调起web-命令行执行错误:" + err);
+            } else {
+                console.log("保活-调起web-命令行执行成功!");
+            }
+        }
+    );
+}
+
+setInterval(start_web, 60 * 60000);
+
+
 app.use( /* 具体配置项迁移参见 https://github.com/chimurai/http-proxy-middleware/blob/master/MIGRATION.md */
   legacyCreateProxyMiddleware({
     target: 'http://127.0.0.1:8080/', /* 需要跨域处理的请求地址 */
